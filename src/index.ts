@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import {Pool} from 'pg';
 import {UserRouter} from './routers/user-router';
+import {corsFilter} from './middleware/cors-filter';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ export const connectionPool: Pool =  new Pool({
 });
 
 let app = express();
+app.use(corsFilter)
 app.use('/', express.json());
 
 app.use('/users', UserRouter);
