@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserRepository } from '../repos/user-repo';
+import {UserRepository} from '../repos/user-repo';
 
 export const UserRouter = express.Router();
 
