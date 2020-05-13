@@ -2,7 +2,6 @@ import {User} from '../models/user.js';
 import { PoolClient } from 'pg';
 import { connectionPool } from '../index.js';
 import { InternalServerError } from '../errors/errors.js';
-import { query } from 'express';
 
 export class UserRepository {
 
@@ -16,7 +15,7 @@ export class UserRepository {
             let rs = await client.query(sql);
             return rs.rows;
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to get all users');
         } finally{
             client && client.release();
         }
@@ -33,7 +32,7 @@ export class UserRepository {
             let rs = await client.query(sql, [id]);
             return rs.rows[0];
         } catch (e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to get user by ID');
         } finally{
             client && client.release();
         }
@@ -50,7 +49,7 @@ export class UserRepository {
             let rs =  await client.query(sql, [val]);
             return rs.rows[0]; 
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to get user by unique key');
         } finally{
             client && client.release();
         }
@@ -67,7 +66,7 @@ export class UserRepository {
             let rs = await client.query(sql, [un]);
             return rs.rows[0];
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to get user by username');
         } finally{
             client && client.release();
         }
@@ -84,7 +83,7 @@ export class UserRepository {
             let rs = await client.query(sql, [roleId]);
             return rs.rows;
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to get users by role');
         } finally{
             client && client.release();
         }
@@ -105,7 +104,7 @@ export class UserRepository {
             await client.query(sql, [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, newUser.roleId]);
             return true;
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to add new user');
         } finally{
             client && client.release();
         }
@@ -126,12 +125,12 @@ export class UserRepository {
                         first_name = $4,
                         last_name = $5,
                         email = $6
-                    where id = $1
+                    where user_id = $1
             `;
             await client.query(sql, [updatedUser.id, updatedUser.username, updatedUser.password, updatedUser.firstName, updatedUser.lastName, updatedUser.email]);
             return true;
         } catch(e){
-            throw new InternalServerError();
+            throw new InternalServerError('Server error happened when trying to update a user');
         } finally{
             client && client.release();
         }
