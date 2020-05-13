@@ -112,4 +112,30 @@ export class UserRepository {
 
     }
 
+    async update(updatedUser: User): Promise<boolean>{
+
+        let client: PoolClient;
+
+        try{
+            client = await connectionPool.connect();
+            let sql = `
+                update app_users
+                    set
+                        username = $2,
+                        password = $3,
+                        first_name = $4,
+                        last_name = $5,
+                        email = $6
+                    where id = $1
+            `;
+            await client.query(sql, [updatedUser.id, updatedUser.username, updatedUser.password, updatedUser.firstName, updatedUser.lastName, updatedUser.email]);
+            return true;
+        } catch(e){
+            throw new InternalServerError();
+        } finally{
+            client && client.release();
+        }
+
+    }
+
 }

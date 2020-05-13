@@ -130,6 +130,50 @@ export class UserService {
         
     }
 
+    async updateUser(updatedUser: User): Promise<boolean>{
+
+        try{
+
+            if(!isValidObject(updatedUser, 'id') || !isValidId(updatedUser.id)){
+                throw new InvalidInputError('Invalid User was input');
+            }
+
+            let userToUpdate = await this.getUserById(updatedUser.id);
+
+            if(!userToUpdate){
+                throw new ResourceNotFoundError('No user found to update');
+            }
+
+            let emailConflict = await this.isEmailAvailable(updatedUser.email);
+
+            if(userToUpdate.email === updatedUser.email){
+                emailConflict = true;
+            }
+
+            if(!emailConflict){
+                throw new ResourceConflictError('Email is already taken');
+            }
+
+            let usernameConflict = await this.isUsernameAvailable(updatedUser.username);
+
+            if(userToUpdate.username === updatedUser.username){
+                usernameConflict = true;
+            }
+
+            if(!usernameConflict){
+                throw new ResourceConflictError('Username is already taken');
+            }
+
+            await this.userRepo.update(updatedUser);
+
+            return true;
+
+        } catch(e){
+            throw e;
+        }
+
+    }
+
     private async isUsernameAvailable(username: string){
 
         try{
