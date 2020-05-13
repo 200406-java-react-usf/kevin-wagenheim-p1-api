@@ -1,7 +1,7 @@
 import { UserRepository } from "../repos/user-repo";
 import { User } from "../models/user";
-import { ResourceNotFoundError, InvalidInputError } from "../errors/errors";
-import { isValidId, isEmptyObject, isPropertyOf, isValidString } from "../util/validators";
+import { ResourceNotFoundError, InvalidInputError, ResourceConflictError } from "../errors/errors";
+import { isValidId, isEmptyObject, isPropertyOf, isValidString, isValidObject } from "../util/validators";
 
 export class UserService {
 
@@ -71,6 +71,86 @@ export class UserService {
         } catch(e){
             throw e;
         }
+
+    }
+
+    async getByUsername(un: string): Promise<User>{
+
+        if(!isValidString(un)){
+            throw new InvalidInputError('Invalid username was input');
+        }
+
+        let result = await this.userRepo.getByUsername(un);
+
+        if(!isValidObject(result)){
+            throw new ResourceNotFoundError('User with that Username was not found');
+        }
+
+        return result;
+
+    }
+
+    async getByRole(roleId: number): Promise<User[]> {
+
+        if(!isValidId(roleId)){
+            throw new InvalidInputError('Invalid role ID was input');
+        }
+
+        let result = await this.userRepo.getByRole(roleId);
+
+        if(!isEmptyObject(result)){
+            throw new ResourceNotFoundError('Role with that ID does not exist');
+        }
+
+        return result;
+
+    }
+
+    async addNewUser(newUser: User): Promise<boolean>{
+
+        if(!isValidObject(newUser, 'id')){
+            throw new InvalidInputError('Invalid User object was input');
+        }
+
+        let usernameConflict = await this.isUsernameAvailable(newUser.username);
+
+        if(!usernameConflict){
+            throw new ResourceConflictError('Username is already taken');
+        }
+
+        let emailConflict = await this.isEmailAvailable(newUser.email);
+
+        if(!emailConflict){
+            throw new ResourceConflictError('Email is already in use');
+        }
+
+        await this.userRepo.save(newUser);
+
+        return true;
+        
+    }
+
+    private async isUsernameAvailable(username: string){
+
+        try{
+            await this.getUserByUniqueKey({'username': username});
+        } catch (e){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private async isEmailAvailable(email: string){
+
+        try{
+            await this.getUserByUniqueKey({'email': email});
+        } catch (e){
+            return true;
+        }
+
+        return false;
 
     }
 
