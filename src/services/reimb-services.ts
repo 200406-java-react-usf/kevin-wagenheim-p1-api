@@ -105,7 +105,7 @@ export class ReimbServices{
 
         try{
 
-            if(!isValidObject(updatedReimb, 'id', 'submitted', 'resolved', 'resolverId', 'reimbStatusId') || !isValidId(updatedReimb.id)){
+            if(!isValidObject(updatedReimb, 'id', 'submitted', 'resolved', 'resolverId') || !isValidId(updatedReimb.id)){
                 throw new InvalidInputError('Invalid Reimbursment was input');
             }
 
@@ -119,23 +119,15 @@ export class ReimbServices{
                 throw new ResourceConflictError('Cannot update author ID');
             }
 
-            if(updatedReimb.id !== reimbToUpdate.id){
-                throw new ResourceConflictError('Cannot update Reimbursment ID');
-            }
-
-            if(updatedReimb.reimbStatusId !== reimbToUpdate.reimbStatusId){
-                throw new ResourceConflictError('Cannot update status of Reimbursment');
-            }
-
-            if(updatedReimb.resolved !== reimbToUpdate.resolved){
+            if(updatedReimb.resolved){
                 throw new ResourceConflictError('Cannot update resolved time');
             }
 
-            if(updatedReimb.resolverId !== reimbToUpdate.resolverId){
+            if(updatedReimb.resolverId){
                 throw new ResourceConflictError('Cannot update resolver');
             }
 
-            if(updatedReimb.submitted !== reimbToUpdate.submitted){
+            if(updatedReimb.submitted){
                 throw new ResourceConflictError('Cannot update submitted time');
             }
 
