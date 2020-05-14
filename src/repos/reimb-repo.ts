@@ -2,6 +2,7 @@ import {Reimbursments} from '../models/reimb.js';
 import { PoolClient } from 'pg';
 import { connectionPool } from '../index.js';
 import { InternalServerError } from '../errors/errors.js';
+import { mapReimbResultSet } from '../util/result-set-mapper.js';
 
 export class ReimbRepository {
 
@@ -13,7 +14,7 @@ export class ReimbRepository {
             client = await connectionPool.connect();
             let sql = 'select * from reimbursements';
             let rs = await client.query(sql);
-            return rs.rows;
+            return rs.rows.map(mapReimbResultSet);
         } catch(e){
             throw new InternalServerError('Server error happened when trying to get all reimbursements');
         } finally{
@@ -30,7 +31,7 @@ export class ReimbRepository {
             client = await connectionPool.connect();
             let sql = 'select * from reimbursements where reimb_id = $1'
             let rs = await client.query(sql, [id]);
-            return rs.rows[0];
+            return mapReimbResultSet(rs.rows[0]);
         } catch (e){
             throw new InternalServerError('Server error happened when trying to get reimbursement by ID');
         } finally{
@@ -47,7 +48,7 @@ export class ReimbRepository {
             client = await connectionPool.connect();
             let sql = `select * from reimbursements where ${key} = $1`;
             let rs =  await client.query(sql, [val]);
-            return rs.rows[0]; 
+            return mapReimbResultSet(rs.rows[0]); 
         } catch(e){
             throw new InternalServerError('Server error happened when trying to get reimbursements by unique key');
         } finally{
