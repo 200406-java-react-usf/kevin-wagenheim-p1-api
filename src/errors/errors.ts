@@ -75,6 +75,25 @@ class AuthenticationError {
 
 }
 
+class AuthorizationError {
+
+    message: string;
+    statusCode: number;
+
+    constructor(reason?: string){
+
+        this.statusCode = 403;
+
+        if(!reason){
+            this.message = 'You\'re not Authorized to view this page';
+        }else{
+            this.message = reason;
+        }
+        
+    }
+
+}
+
 class InternalServerError {
 
     message: string;
@@ -99,5 +118,6 @@ export {
     AuthenticationError,
     ResourceConflictError,
     InvalidInputError,
-    InternalServerError
+    InternalServerError,
+    AuthorizationError
 };
