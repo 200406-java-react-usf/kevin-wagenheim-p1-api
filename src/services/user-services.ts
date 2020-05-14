@@ -108,25 +108,29 @@ export class UserService {
 
     async addNewUser(newUser: User): Promise<boolean>{
 
-        if(!isValidObject(newUser, 'id')){
-            throw new InvalidInputError('Invalid User object was input');
-        }
+        try{
+            if(!isValidObject(newUser, 'id')){
+                throw new InvalidInputError('Invalid User object was input');
+            }
 
-        let usernameConflict = await this.isUsernameAvailable(newUser.username);
+            let usernameConflict = await this.isUsernameAvailable(newUser.username);
 
-        if(!usernameConflict){
-            throw new ResourceConflictError('Username is already taken');
-        }
+            if(!usernameConflict){
+                throw new ResourceConflictError('Username is already taken');
+            }
 
-        let emailConflict = await this.isEmailAvailable(newUser.email);
+            let emailConflict = await this.isEmailAvailable(newUser.email);
 
-        if(!emailConflict){
-            throw new ResourceConflictError('Email is already in use');
-        }
+            if(!emailConflict){
+                throw new ResourceConflictError('Email is already in use');
+            }
 
-        await this.userRepo.save(newUser);
+            await this.userRepo.save(newUser);
 
-        return true;
+            return true;
+        } catch(e){
+            throw e;
+        }    
         
     }
 
