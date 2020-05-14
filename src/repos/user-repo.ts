@@ -74,6 +74,23 @@ export class UserRepository {
 
     }
 
+    async getByCredentials(username: string, password: string): Promise<User>{
+
+        let client: PoolClient;
+
+        try{
+            client = await connectionPool.connect();
+            let sql = 'select * from app_users where username = $1 and password = $2';
+            let rs = await client.query(sql, [username, password]);
+            return mapUserResultSet(rs.rows[0]);
+        } catch(e){
+            throw new InternalServerError('Server error happened when trying to get user by credentials');
+        } finally {
+            client && client.release();
+        }
+
+    }
+
     async getByRole(roleId: number): Promise<User[]>{
 
         let client: PoolClient;
