@@ -76,7 +76,7 @@ export class ReimbRepository {
                 newReimbursment.description,
                 newReimbursment.authorId,
                 null,
-                newReimbursment.reimbStatusId,
+                1,
                 newReimbursment.reimbTypeId
             ]);
             return true;

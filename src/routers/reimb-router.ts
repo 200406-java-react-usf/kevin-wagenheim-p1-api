@@ -15,3 +15,25 @@ ReimbRouter.get('', async (req, resp) =>{
     }
 
 });
+
+ReimbRouter.post('', async (req, resp) => {
+
+    try{
+        let pl = await reimbService.addNewReimb(req.body);
+        resp.status(201).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
+});
+
+ReimbRouter.put('', async (req, resp) => {
+
+    try{
+        let pl = await reimbService.updateReimb(req.body);
+        resp.status(204).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
+});

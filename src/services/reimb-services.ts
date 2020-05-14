@@ -78,8 +78,17 @@ export class ReimbServices{
 
         try{
 
-            if(!isValidObject(newReimbursment, 'id')){
+            if(!isValidObject(newReimbursment, 'id', 'submitted', 'resolved', 'resolverId', 'reimbStatusId')){
                 throw new InvalidInputError('Invalid Reimbursment was input')
+            }
+
+            if(!isValidId(newReimbursment.authorId)){
+                throw new InvalidInputError('Invalid author ID was input');
+            }
+
+
+            if(!isValidId(newReimbursment.reimbTypeId)){
+                throw new InvalidInputError('Invalid type ID was input');
             }
 
             await this.reimbRepo.save(newReimbursment);
@@ -96,7 +105,7 @@ export class ReimbServices{
 
         try{
 
-            if(!isValidObject(updatedReimb, 'id') || !isValidId(updatedReimb.id)){
+            if(!isValidObject(updatedReimb, 'id', 'submitted', 'resolved', 'resolverId', 'reimbStatusId') || !isValidId(updatedReimb.id)){
                 throw new InvalidInputError('Invalid Reimbursment was input');
             }
 
