@@ -29,7 +29,7 @@ export class ReimbRepository {
 
         try{
             client = await connectionPool.connect();
-            let sql = 'select * from reimbursements where reimb_id = $1'
+            let sql = 'select * from reimbursements where reimb_id = $1';
             let rs = await client.query(sql, [id]);
             return mapReimbResultSet(rs.rows[0]);
         } catch (e){
@@ -96,16 +96,17 @@ export class ReimbRepository {
         try{
             client = await connectionPool.connect();
             let sql = `
-                update reimbursments
+                update reimbursements
                     set
                         amount = $2,
                         description = $3,
                         reimb_type_id = $4
                     where reimb_id = $1
             `;
-            await client.query(sql, [updatedReimbursment.amount, updatedReimbursment.description, updatedReimbursment.reimbTypeId]);
+            await client.query(sql, [updatedReimbursment.id, updatedReimbursment.amount, updatedReimbursment.description, updatedReimbursment.reimbTypeId]);
             return true;
         } catch(e){
+            console.log(e);
             throw new InternalServerError('Server error happened when trying to update a reimbursement');
         } finally{
             client && client.release();
