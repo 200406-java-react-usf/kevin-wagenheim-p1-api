@@ -141,4 +141,24 @@ export class ReimbServices{
 
     }
 
+    async resolveReimb(updatedReimb: Reimbursments): Promise<boolean>{
+
+        try{
+
+            if(!isValidObject(updatedReimb, 'id', 'resolved') || !isValidId(updatedReimb.id)){
+                throw new InvalidInputError('Invalid Reimbursment was input');
+            }
+
+            let reimbToUpdate = await this.getReimbById(updatedReimb.id);
+
+            await this.reimbRepo.resolveReimb(updatedReimb);
+
+            return true;
+
+        } catch(e){
+            throw e;
+        }
+
+    }
+
 }

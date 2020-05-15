@@ -114,4 +114,28 @@ export class ReimbRepository {
 
     }
 
+    async resolveReimb(updatedReimb: Reimbursments): Promise<boolean>{
+
+        let client: PoolClient;
+
+        let resolvedTime = new Date();
+
+        try{
+            client = await connectionPool.connect();
+            let sql = `
+                update reimbursements
+                set
+                    resolved = $2,
+                    resolver_id = $3,
+                    reimb_status_id = $4
+                where reimb_id = $1
+            `;
+            await client.query(sql, [updatedReimb.id, resolvedTime, updatedReimb.resolverId, updatedReimb.reimbStatusId]);
+            return true;
+        } catch(e){
+            throw new InternalServerError('Server error happened when resolving a reimb');
+        }
+
+    }
+
 }
