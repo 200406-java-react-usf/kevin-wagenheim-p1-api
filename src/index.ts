@@ -4,6 +4,8 @@ import {Pool} from 'pg';
 import {UserRouter} from './routers/user-router';
 import {corsFilter} from './middleware/cors-filter';
 import { ReimbRouter } from './routers/reimb-router';
+import { AuthRouter } from './routers/auth-router';
+import { sessionMiddleware } from './middleware/session-middleware';
 
 dotenv.config();
 
@@ -21,7 +23,8 @@ export const connectionPool: Pool =  new Pool({
 let app = express();
 app.use(corsFilter)
 app.use('/', express.json());
-
+app.use(sessionMiddleware);
+app.use('/auth', AuthRouter);
 app.use('/users', UserRouter);
 app.use('/reimbursments', ReimbRouter);
 
