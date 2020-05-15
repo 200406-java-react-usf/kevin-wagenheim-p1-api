@@ -18,7 +18,7 @@ UserRouter.get('', adminGaurd, async (req, resp) => {
 
 });
 
-UserRouter.get('/id/:id', async (req, resp) => {
+UserRouter.get('/id/:id',adminGaurd , async (req, resp) => {
 
     let id = +req.params.id;
 
@@ -31,7 +31,7 @@ UserRouter.get('/id/:id', async (req, resp) => {
 
 });
 
-UserRouter.post('', async (req, resp) => {
+UserRouter.post('', adminGaurd, async (req, resp) => {
 
     try{
         let pl = await userService.addNewUser(req.body);
