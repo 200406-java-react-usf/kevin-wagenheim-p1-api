@@ -1,11 +1,12 @@
 import express from 'express';
 import appConfig from '../config/app-config';
+import { financialManagerGaurd } from '../middleware/financial-manager-middleware';
 
 export const ReimbRouter = express.Router();
 
 const reimbService = appConfig.reimbService;
 
-ReimbRouter.get('', async (req, resp) =>{
+ReimbRouter.get('', financialManagerGaurd, async (req, resp) =>{
 
     try{
         let pl = await reimbService.getAllReimbs();
