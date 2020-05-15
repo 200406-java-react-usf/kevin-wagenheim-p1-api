@@ -17,6 +17,19 @@ ReimbRouter.get('', financialManagerGaurd, async (req, resp) =>{
 
 });
 
+ReimbRouter.get('/id/:id', financialManagerGaurd, async (req, resp) => {
+
+    let id = +req.params.id;
+
+    try{
+        let pl = await reimbService.getReimbById(id);
+        resp.status(200).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
+})
+
 ReimbRouter.post('', async (req, resp) => {
 
     try{
@@ -32,6 +45,17 @@ ReimbRouter.put('', async (req, resp) => {
 
     try{
         let pl = await reimbService.updateReimb(req.body);
+        resp.status(204).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
+});
+
+ReimbRouter.put('/resolve', financialManagerGaurd, async (req, resp) => {
+
+    try{
+        let pl = await reimbService.resolveReimb(req.body);
         resp.status(204).json(pl);
     } catch(e){
         resp.status(e.statusCode).json(e);
