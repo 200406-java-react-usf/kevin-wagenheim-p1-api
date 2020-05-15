@@ -1,12 +1,13 @@
 import express from 'express';
 import {UserRepository} from '../repos/user-repo';
 import appConfig from '../config/app-config';
+import { adminGaurd } from '../middleware/admin-middleware';
 
 export const UserRouter = express.Router();
 
 let userService = appConfig.userService;
 
-UserRouter.get('', async (req, resp) => {
+UserRouter.get('', adminGaurd, async (req, resp) => {
 
     try{
         let pl = await userService.getAllUsers();
