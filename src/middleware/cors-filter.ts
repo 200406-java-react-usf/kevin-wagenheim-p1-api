@@ -8,7 +8,7 @@ export function corsFilter(req: Request, resp: Response, next){
     resp.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
 
     if(req.method === 'OPTIONS'){
-        resp.status(200);
+        resp.sendStatus(200);
     } else{
         next();
     }
