@@ -90,6 +90,30 @@ export class UserService {
 
     }
 
+    async authenticate(username: string, password: string): Promise<User>{
+
+        try{
+
+            if(!isValidString(username, password)){
+                throw new InvalidInputError('Invalid credentials given');
+            }
+
+            let authUser: User;
+
+            authUser = await this.userRepo.getByCredentials(username, password);
+            
+            if(!isEmptyObject(authUser)){
+                throw new ResourceNotFoundError('No user found with those credentials');
+            }
+
+            return authUser;
+
+        } catch(e){
+            throw e;
+        }
+
+    }
+
     async getByRole(roleId: number): Promise<User[]> {
 
         if(!isValidId(roleId)){

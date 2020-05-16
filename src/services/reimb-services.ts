@@ -78,8 +78,17 @@ export class ReimbServices{
 
         try{
 
-            if(!isValidObject(newReimbursment, 'id')){
+            if(!isValidObject(newReimbursment, 'id', 'submitted', 'resolved', 'resolverId', 'reimbStatusId')){
                 throw new InvalidInputError('Invalid Reimbursment was input')
+            }
+
+            if(!isValidId(newReimbursment.authorId)){
+                throw new InvalidInputError('Invalid author ID was input');
+            }
+
+
+            if(!isValidId(newReimbursment.reimbTypeId)){
+                throw new InvalidInputError('Invalid type ID was input');
             }
 
             await this.reimbRepo.save(newReimbursment);
@@ -96,7 +105,7 @@ export class ReimbServices{
 
         try{
 
-            if(!isValidObject(updatedReimb, 'id') || !isValidId(updatedReimb.id)){
+            if(!isValidObject(updatedReimb, 'id', 'submitted', 'resolved', 'resolverId') || !isValidId(updatedReimb.id)){
                 throw new InvalidInputError('Invalid Reimbursment was input');
             }
 
@@ -110,27 +119,39 @@ export class ReimbServices{
                 throw new ResourceConflictError('Cannot update author ID');
             }
 
-            if(updatedReimb.id !== reimbToUpdate.id){
-                throw new ResourceConflictError('Cannot update Reimbursment ID');
-            }
-
-            if(updatedReimb.reimbStatusId !== reimbToUpdate.reimbStatusId){
-                throw new ResourceConflictError('Cannot update status of Reimbursment');
-            }
-
-            if(updatedReimb.resolved !== reimbToUpdate.resolved){
+            if(updatedReimb.resolved){
                 throw new ResourceConflictError('Cannot update resolved time');
             }
 
-            if(updatedReimb.resolverId !== reimbToUpdate.resolverId){
+            if(updatedReimb.resolverId){
                 throw new ResourceConflictError('Cannot update resolver');
             }
 
-            if(updatedReimb.submitted !== reimbToUpdate.submitted){
+            if(updatedReimb.submitted){
                 throw new ResourceConflictError('Cannot update submitted time');
             }
 
             await this.reimbRepo.update(updatedReimb);
+
+            return true;
+
+        } catch(e){
+            throw e;
+        }
+
+    }
+
+    async resolveReimb(updatedReimb: Reimbursments): Promise<boolean>{
+
+        try{
+
+            if(!isValidObject(updatedReimb, 'id', 'resolved') || !isValidId(updatedReimb.id)){
+                throw new InvalidInputError('Invalid Reimbursment was input');
+            }
+
+            let reimbToUpdate = await this.getReimbById(updatedReimb.id);
+
+            await this.reimbRepo.resolveReimb(updatedReimb);
 
             return true;
 
