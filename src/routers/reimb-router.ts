@@ -6,7 +6,7 @@ export const ReimbRouter = express.Router();
 
 const reimbService = appConfig.reimbService;
 
-ReimbRouter.get('', financialManagerGaurd, async (req, resp) =>{
+ReimbRouter.get('',financialManagerGaurd, async (req, resp) =>{
 
     try{
         let pl = await reimbService.getAllReimbs();
