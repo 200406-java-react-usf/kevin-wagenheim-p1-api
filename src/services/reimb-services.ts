@@ -74,6 +74,22 @@ export class ReimbServices{
 
     }
 
+    async getReimbByAuthorId(id: number): Promise<Reimbursments[]>{
+
+        if (!isValidId(id)){
+            throw new InvalidInputError('Invalid ID was input.');
+        }
+
+        let result = await this.reimbRepo.getByAuthorId(id);
+
+        if (result.length === 0){
+            throw new ResourceNotFoundError('No reimbursments with that author ID was found');
+        }
+
+        return result;
+
+    }
+
     async addNewReimb(newReimbursment: Reimbursments): Promise<boolean>{
 
         try{

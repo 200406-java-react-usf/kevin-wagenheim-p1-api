@@ -57,6 +57,23 @@ export class ReimbRepository {
 
     }
 
+    async getByAuthorId(id: number): Promise<Reimbursments[]> {
+
+        let client: PoolClient;
+
+        try{
+            client = await connectionPool.connect();
+            let sql = 'select * from reimbursments where author_id = $1'
+            let rs = await client.query(sql, [id]);
+            return rs.rows.map(mapReimbResultSet);
+        } catch (e){
+            throw new InternalServerError('Server error when trying to get reimbursment by author ID');
+        } finally {
+            client && client.release();
+        }
+
+    }
+
     async save(newReimbursment: Reimbursments): Promise<Boolean>{
 
         let client:PoolClient;
