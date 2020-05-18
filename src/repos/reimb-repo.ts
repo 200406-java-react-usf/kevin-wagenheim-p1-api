@@ -63,7 +63,7 @@ export class ReimbRepository {
 
         try{
             client = await connectionPool.connect();
-            let sql = 'select * from reimbursments where author_id = $1'
+            let sql = 'select * from reimbursements where author_id = $1'
             let rs = await client.query(sql, [id]);
             return rs.rows.map(mapReimbResultSet);
         } catch (e){
