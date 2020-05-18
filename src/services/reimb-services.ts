@@ -74,7 +74,12 @@ export class ReimbServices{
 
     }
 
-    async getReimbByAuthorId(id: number): Promise<Reimbursments[]>{
+    async getReimbByAuthorId(jsonObj: object): Promise<Reimbursments[]>{
+
+        let keys = Object.keys(jsonObj);
+        let val = keys[0];
+
+        let id = +jsonObj[val];
 
         if (!isValidId(id)){
             throw new InvalidInputError('Invalid ID was input.');
