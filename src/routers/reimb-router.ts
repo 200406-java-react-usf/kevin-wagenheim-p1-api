@@ -28,6 +28,17 @@ ReimbRouter.get('/id/:id', financialManagerGaurd, async (req, resp) => {
         resp.status(e.statusCode).json(e);
     }
 
+});
+
+ReimbRouter.get('/myreimbursments', async (req, resp) => {
+
+    try{
+        let pl = await reimbService.getReimbByAuthorId(req.body);
+        resp.status(200).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
 })
 
 ReimbRouter.post('', async (req, resp) => {
