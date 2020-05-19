@@ -17,7 +17,7 @@ ReimbRouter.get('',financialManagerGaurd, async (req, resp) =>{
 
 });
 
-ReimbRouter.get('/id/:id', financialManagerGaurd, async (req, resp) => {
+ReimbRouter.get('/id/:id', async (req, resp) => {
 
     let id = +req.params.id;
 
