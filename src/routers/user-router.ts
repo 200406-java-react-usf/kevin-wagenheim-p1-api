@@ -51,4 +51,15 @@ UserRouter.put('', async (req, resp) => {
         resp.status(e.statusCode).json(e);
     }
 
-})
+});
+
+UserRouter.delete('', async (req, resp) => {
+
+    try{
+        let pl = await userService.deleteUser(req.body);
+        resp.status(201).json(pl);
+    } catch(e){
+        resp.status(e.statusCode).json(e);
+    }
+
+});
