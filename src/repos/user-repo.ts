@@ -1,8 +1,8 @@
-import {User} from '../models/user.js';
+import {User} from '../models/user';
 import { PoolClient } from 'pg';
-import { connectionPool } from '../index.js';
-import { InternalServerError } from '../errors/errors.js';
-import { mapUserResultSet } from '../util/result-set-mapper.js';
+import { connectionPool } from '../index';
+import { InternalServerError } from '../errors/errors';
+import { mapUserResultSet } from '../util/result-set-mapper';
 
 export class UserRepository {
 
