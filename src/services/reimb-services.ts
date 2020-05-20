@@ -74,6 +74,27 @@ export class ReimbServices{
 
     }
 
+    async getReimbByAuthorId(jsonObj: object): Promise<Reimbursments[]>{
+
+        let keys = Object.keys(jsonObj);
+        let val = keys[0];
+
+        let id = +jsonObj[val];
+
+        if (!isValidId(id)){
+            throw new InvalidInputError('Invalid ID was input.');
+        }
+
+        let result = await this.reimbRepo.getByAuthorId(id);
+
+        if (result.length === 0){
+            throw new ResourceNotFoundError('No reimbursments with that author ID was found');
+        }
+
+        return result;
+
+    }
+
     async addNewReimb(newReimbursment: Reimbursments): Promise<boolean>{
 
         try{

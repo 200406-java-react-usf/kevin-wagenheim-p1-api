@@ -155,4 +155,21 @@ export class UserRepository {
 
     }
 
+    async deleteById(id: number): Promise<boolean>{
+
+        let client: PoolClient;
+
+        try{
+            client = await connectionPool.connect();
+            let sql = 'delete from app_users where user_id = $1';
+            await client.query(sql, [id]);
+            return true;
+        } catch(e){
+            throw new InternalServerError('Server error happened why trying to delete a user');
+        } finally{
+            client && client.release();
+        }
+
+    }
+
 }
