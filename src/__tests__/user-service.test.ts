@@ -15,6 +15,7 @@ jest.mock('../repos/user-repo', () => {
         deleteById = jest.fn();
         getByUsername = jest.fn();
         getByCredentials = jest.fn();
+        getByRole = jest.fn();
     };
 
 });
@@ -80,6 +81,91 @@ describe('tests for the User Service', () => {
             expect(e instanceof ResourceNotFoundError).toBe(true);
         }
         
+    });
+
+    test('should return a User[] when getByRole is called', async () => {
+
+        //Arrange
+        expect.hasAssertions();
+
+        let users: User[] = [];
+
+        Validator.isValidId = jest.fn().mockReturnValue(true);
+        Validator.isEmptyObject = jest.fn().mockReturnValue(true);
+
+        mockRepo.getByRole = jest.fn().mockImplementation((id: number) => {
+            return new Promise<User[]>((resolve) => {
+                let roles = mockUsers.filter(user => user.roleId === id);
+                for (let role of roles){
+                    users.push(role);                    
+                }
+                resolve(users);
+            })
+        });
+
+        //Act
+        let result = await sut.getByRole(3);
+
+        //Assert
+        expect(result).toBeTruthy();
+        expect(result.length).toBe(3);
+
+    });
+
+    test('should throw invalid input error when getByRole is called with invalid id', async () => {
+
+        //Arrange
+        expect.hasAssertions();
+
+        let users: User[] = [];
+
+        Validator.isValidId = jest.fn().mockReturnValue(false);
+        Validator.isEmptyObject = jest.fn().mockReturnValue(true);
+
+        mockRepo.getByRole = jest.fn().mockImplementation((id: number) => {
+            return new Promise<User[]>((resolve) => {
+                let roles = mockUsers.filter(user => user.roleId === id);
+                for (let role of roles){
+                    users.push(role);                    
+                }
+                resolve(users);
+            })
+        });
+
+        try{
+            await sut.getByRole(-1);
+        } catch(e){
+            expect(e instanceof InvalidInputError).toBe(true);
+        }
+
+    });
+
+    test('should throw ResourceNotFoundError when getByRole is called with invalid id', async () => {
+
+        //Arrange
+        expect.hasAssertions();
+
+        let users: User[] = [];
+
+        Validator.isValidId = jest.fn().mockReturnValue(true);
+        Validator.isEmptyObject = jest.fn().mockReturnValue(false);
+
+        mockRepo.getByRole = jest.fn().mockImplementation((id: number) => {
+            return new Promise<User[]>((resolve) => {
+                let roles = mockUsers.filter(user => user.roleId === id);
+                for (let role of roles){
+                    users.push(role);                    
+                }
+                resolve(users);
+            })
+        });
+
+        try{
+            await sut.getByRole(500);
+        } catch(e){
+            expect(e instanceof ResourceNotFoundError).toBe(true);
+        }
+
     });
 
     test('should return a user when getById is called with correct ID', async () => {
