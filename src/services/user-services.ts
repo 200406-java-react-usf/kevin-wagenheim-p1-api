@@ -1,6 +1,6 @@
 import { UserRepository } from "../repos/user-repo";
 import { User } from "../models/user";
-import { ResourceNotFoundError, InvalidInputError, ResourceConflictError } from "../errors/errors";
+import { ResourceNotFoundError, InvalidInputError, ResourceConflictError, AuthenticationError } from "../errors/errors";
 import { isValidId, isEmptyObject, isPropertyOf, isValidString, isValidObject } from "../util/validators";
 
 export class UserService {
@@ -103,7 +103,7 @@ export class UserService {
             authUser = await this.userRepo.getByCredentials(username, password);
             
             if(!isEmptyObject(authUser)){
-                throw new ResourceNotFoundError('No user found with those credentials');
+                throw new AuthenticationError('No user found with those credentials');
             }
 
             return authUser;
