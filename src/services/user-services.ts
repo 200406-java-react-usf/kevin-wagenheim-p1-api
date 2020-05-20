@@ -202,6 +202,29 @@ export class UserService {
 
     }
 
+    async deleteUser (jsonObj: object): Promise<boolean>{
+
+        let keys = Object.keys(jsonObj);
+        let val = keys[0];
+
+        let id = +jsonObj[val];
+
+        if(!isValidId(id)){
+            throw new InvalidInputError('Invalid ID was input');
+        }
+
+        let userToDelete = await this.getUserById(id);
+
+        if(!userToDelete){
+            throw new ResourceNotFoundError('User does not exist, or was already deleted');
+        }
+
+        let result = await this.userRepo.deleteById(id);
+
+        return result;
+
+    }
+
     private async isUsernameAvailable(username: string){
 
         try{
