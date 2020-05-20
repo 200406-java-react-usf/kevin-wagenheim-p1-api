@@ -225,7 +225,7 @@ export class UserService {
 
     }
 
-    private async isUsernameAvailable(username: string){
+    async isUsernameAvailable(username: string){
 
         try{
             await this.getUserByUniqueKey({'username': username});
@@ -237,7 +237,7 @@ export class UserService {
 
     }
 
-    private async isEmailAvailable(email: string){
+    async isEmailAvailable(email: string){
 
         try{
             await this.getUserByUniqueKey({'email': email});
