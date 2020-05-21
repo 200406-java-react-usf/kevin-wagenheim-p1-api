@@ -172,7 +172,11 @@ export class ReimbServices{
 
             let reimbToUpdate = await this.getReimbById(updatedReimb.id);
 
-            await this.reimbRepo.resolveReimb(updatedReimb);
+            if(!isEmptyObject(reimbToUpdate)){
+                throw new ResourceNotFoundError('Could not find reimb to resolve');
+            }
+
+            await this.reimbRepo.resolveReimb(reimbToUpdate);
 
             return true;
 
