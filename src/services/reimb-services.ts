@@ -132,6 +132,10 @@ export class ReimbServices{
 
             let reimbToUpdate = await this.getReimbById(updatedReimb.id);
 
+            if(!isEmptyObject(reimbToUpdate)){
+                throw new ResourceNotFoundError('No Reimb with that id');
+            }
+
             if(updatedReimb.reimbStatusId !== 1){
                 throw new ResourceConflictError('Cannot update a non-pending Reimbursment');
             }
@@ -146,10 +150,6 @@ export class ReimbServices{
 
             if(updatedReimb.resolverId){
                 throw new ResourceConflictError('Cannot update resolver');
-            }
-
-            if(updatedReimb.submitted){
-                throw new ResourceConflictError('Cannot update submitted time');
             }
 
             await this.reimbRepo.update(updatedReimb);
@@ -171,6 +171,10 @@ export class ReimbServices{
             }
 
             let reimbToUpdate = await this.getReimbById(updatedReimb.id);
+
+            if(!isEmptyObject(reimbToUpdate)){
+                throw new ResourceNotFoundError('Could not find reimb to resolve');
+            }
 
             await this.reimbRepo.resolveReimb(updatedReimb);
 
