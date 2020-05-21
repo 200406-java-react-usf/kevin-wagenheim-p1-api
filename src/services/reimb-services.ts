@@ -176,7 +176,7 @@ export class ReimbServices{
                 throw new ResourceNotFoundError('Could not find reimb to resolve');
             }
 
-            await this.reimbRepo.resolveReimb(reimbToUpdate);
+            await this.reimbRepo.resolveReimb(updatedReimb);
 
             return true;
 
