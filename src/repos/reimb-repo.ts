@@ -1,8 +1,8 @@
-import {Reimbursments} from '../models/reimb.js';
+import {Reimbursments} from '../models/reimb';
 import { PoolClient } from 'pg';
-import { connectionPool } from '../index.js';
-import { InternalServerError } from '../errors/errors.js';
-import { mapReimbResultSet } from '../util/result-set-mapper.js';
+import { connectionPool } from '../index';
+import { InternalServerError } from '../errors/errors';
+import { mapReimbResultSet } from '../util/result-set-mapper';
 
 export class ReimbRepository {
 
