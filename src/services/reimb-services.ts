@@ -11,6 +11,10 @@ export class ReimbServices{
 
     }
 
+    /**
+     * Returns array of all Reimbursments in the database
+     */
+
     async getAllReimbs(): Promise<Reimbursments[]>{
 
         let result = await this.reimbRepo.getAll();
@@ -22,6 +26,11 @@ export class ReimbServices{
         return result;
 
     }
+    
+    /**
+     * Returns a Reimbursment given its unique ID
+     * @param id {number} Unique ID of a Reimbursment
+     */
 
     async getReimbById(id: number): Promise<Reimbursments>{
 
@@ -38,6 +47,13 @@ export class ReimbServices{
         return result;
 
     }
+
+    /**
+     * Retrieves a Reimbursment given a key in the Reimbursment object, and its value
+     * @param key {string} Key in the Reimbursment object
+     * @param val {string} Value based on the given key
+     */
+
 
     async getReimbByUniqueKey(queryObj: any): Promise<Reimbursments>{
 
@@ -74,6 +90,11 @@ export class ReimbServices{
 
     }
 
+    /**
+     * Returns an array of Reimbursments given an author ID
+     * @param id Unique ID given to an author
+     */
+
     async getReimbByAuthorId(jsonObj: object): Promise<Reimbursments[]>{
 
         let keys = Object.keys(jsonObj);
@@ -94,6 +115,11 @@ export class ReimbServices{
         return result;
 
     }
+
+    /**
+     * Adds a new Reimbursment to the database.
+     * @param newUser {Reimbursment} Reimbursment Object
+     */
 
     async addNewReimb(newReimbursment: Reimbursments): Promise<boolean>{
 
@@ -121,6 +147,11 @@ export class ReimbServices{
         }
 
     }
+
+    /**
+     * Updates an existing reimbursment based on the values given in the user passed in.
+     * @param updatedUser {Reimbursments} Reimbursment Object
+     */
 
     async updateReimb(updatedReimb: Reimbursments): Promise<boolean>{
 
@@ -161,6 +192,11 @@ export class ReimbServices{
         }
 
     }
+
+    /**
+     * Resolves a reimbursment based on the changed reimbStatusId
+     * @param updatedReimb {Reimbursment} Resolved Reimbursment
+     */
 
     async resolveReimb(updatedReimb: Reimbursments): Promise<boolean>{
 

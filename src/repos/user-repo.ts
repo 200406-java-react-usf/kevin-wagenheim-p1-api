@@ -6,6 +6,10 @@ import { mapUserResultSet } from '../util/result-set-mapper';
 
 export class UserRepository {
 
+    /**
+     * Retrieves all Users in the database.
+     */
+
     async getAll(): Promise<User[]> {
 
         let client: PoolClient;
@@ -22,6 +26,11 @@ export class UserRepository {
         }
 
     }
+
+    /**
+     * Retrives a User given their unique ID
+     * @param id {number} Unique ID given to a user when created
+     */
 
     async getById(id: number): Promise<User>{
 
@@ -40,6 +49,12 @@ export class UserRepository {
 
     }
 
+    /**
+     * Retrieves a user given a key in the user object, and its value
+     * @param key {string} Key in the User object
+     * @param val {string} Value based on the given key
+     */
+
     async getByUniqueKey(key: string, val: string): Promise<User> {
 
         let client: PoolClient;
@@ -56,6 +71,12 @@ export class UserRepository {
         }
 
     }
+
+    /**
+     * Retrieves a user given the username of the user.
+     * @param un {string} Username of the User
+     */
+
 
     async getByUsername(un: string): Promise<User> {
 
@@ -74,6 +95,13 @@ export class UserRepository {
 
     }
 
+    /**
+     * Retrieves a user given the user's username and password
+     * @param un {string} Username
+     * @param pw {string} Password
+     */
+
+
     async getByCredentials(username: string, password: string): Promise<User>{
 
         let client: PoolClient;
@@ -91,6 +119,12 @@ export class UserRepository {
 
     }
 
+    /**
+     * Returns an array of users of a certain role 
+     * @param roleId {number} Unique ID of the role
+     * 
+     */
+
     async getByRole(roleId: number): Promise<User[]>{
 
         let client: PoolClient;
@@ -107,6 +141,11 @@ export class UserRepository {
         }
 
     }
+
+    /**
+     * Adds a new User to the database.
+     * @param newUser {User} User Object
+     */
 
     async save(newUser: User): Promise<Boolean>{
 
@@ -128,6 +167,12 @@ export class UserRepository {
         }
 
     }
+
+    /**
+     * Updates an existing user based on the values given in the user passed in. Uses ID to find and update the existing user.
+     * @param updatedUser {User} User Object
+     */
+
 
     async update(updatedUser: User): Promise<boolean>{
 
@@ -154,6 +199,12 @@ export class UserRepository {
         }
 
     }
+
+    /**
+     * Deletes a user given its unique ID
+     * @param id {number} Unique ID of the user
+     */
+
 
     async deleteById(id: number): Promise<boolean>{
 

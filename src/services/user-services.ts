@@ -11,6 +11,10 @@ export class UserService {
 
     }
 
+    /** 
+     * Retrieves an Array of Cards from the database
+    */
+
     async getAllUsers(): Promise<User[]>{
 
         let result = await this.userRepo.getAll();
@@ -22,6 +26,11 @@ export class UserService {
         return result;
 
     }
+
+    /**
+     * Retrieves a Card given an ID
+     * @param id {string} id : Unique number given to each card for Identification
+     */
 
     async getUserById(id: number): Promise<User>{
 
@@ -38,6 +47,11 @@ export class UserService {
         return result;
 
     }
+
+    /**
+     * Retrives a User from the database given a correct Key/Value pair.
+     * @param queryObj {any} Object with the key and value to search for 
+     */
 
     async getUserByUniqueKey(queryObj: any): Promise<User>{
 
@@ -73,6 +87,12 @@ export class UserService {
         }
 
     }
+    
+    /**
+     * Retrieves a user given the username of the user.
+     * @param un {string} Username of the User
+     */
+
 
     async getByUsername(un: string): Promise<User>{
 
@@ -89,6 +109,12 @@ export class UserService {
         return result;
 
     }
+
+    /**
+     * Retrieves a user given the user's username and password
+     * @param un {string} Username
+     * @param pw {string} Password
+     */
 
     async authenticate(username: string, password: string): Promise<User>{
 
@@ -114,6 +140,12 @@ export class UserService {
 
     }
 
+    /**
+     * Returns an array of users of a certain role 
+     * @param roleId {number} Unique ID of the role
+     * 
+     */
+
     async getByRole(roleId: number): Promise<User[]> {
 
         if(!isValidId(roleId)){
@@ -129,6 +161,11 @@ export class UserService {
         return result;
 
     }
+
+    /**
+     * Adds a new User to the database.
+     * @param newUser {User} User Object
+     */
 
     async addNewUser(newUser: User): Promise<boolean>{
 
@@ -157,6 +194,12 @@ export class UserService {
         }    
         
     }
+
+    /**
+     * Updates an existing user based on the values given in the user passed in. Uses ID to find and update the existing user.
+     * @param updateUser {User} User Object
+     */
+
 
     async updateUser(updatedUser: User): Promise<boolean>{
 
@@ -202,6 +245,11 @@ export class UserService {
 
     }
 
+    /**
+     * Deletes a card given the JSON object from the DELETE HTTP request
+     * @param jsonObj {Object} JSON object from the DELETE HTTP request
+     */
+
     async deleteUser (jsonObj: object): Promise<boolean>{
 
         let keys = Object.keys(jsonObj);
@@ -225,6 +273,11 @@ export class UserService {
 
     }
 
+    /**
+     * Checks to see if the username exists in the database
+     * @param username {string} Username
+     */
+
     async isUsernameAvailable(username: string){
 
         try{
@@ -236,6 +289,11 @@ export class UserService {
         return false;
 
     }
+
+    /**
+     * Checks to see if the email exists in the database
+     * @param email {string} Email
+     */
 
     async isEmailAvailable(email: string){
 
